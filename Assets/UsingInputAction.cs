@@ -33,7 +33,7 @@ public class UsingInputAction : MonoBehaviour
     private float startDoubleTimePosition;
     private float endTimeDoublePosition;
     private float dethZoneSwipe;
-    //private float dethTimeSwipe;
+    //private float dethTimeSwipe; 
     private float distance;
     private float primaryDelta;
     private float zoomDelta;
@@ -48,41 +48,41 @@ public class UsingInputAction : MonoBehaviour
 
         NewControls newControls = new NewControls();
         newControls.Enable();
-        newControls//Player.Jump.performed += Space;
+        newControls.Player.Jump.performed += Space;
         //newControls.Player.Movement.performed += Move;
         if (dragPosSwipeRotateMovePres == 0)
         {
             if (WorldTwoD)
-                newControls.Touch.Move.performed += DragDrop2D;  //Position is end
+                newControls.Player.Move.performed += DragDrop2D;  //Position is end
             else
-                newControls.Touch.Move.performed += DragDrop3D;  //Position is end
+                newControls.Player.Move.performed += DragDrop3D;  //Position is end
         }
         if (dragPosSwipeRotateMovePres == 1)
         {
             if(WorldTwoD)
-                newControls.Touch.Press.canceled += TouchPosition2D;  //DragDrop in process 
+                newControls.Player.Press.canceled += TouchPosition2D;  //DragDrop in process 
             else
-                newControls.Touch.Move.canceled += TouchPosition3D;    //DragDrop in process 
+                newControls.Player.Move.canceled += TouchPosition3D;    //DragDrop in process 
         }
         if (dragPosSwipeRotateMovePres == 2)
         {
-            newControls.Touch.Move.started += SwipeStart;   //Swipe is drag
-            newControls.Touch.Move.canceled += SwipeEnd;    //Drag moving
+            newControls.Player.Move.started += SwipeStart;   //Swipe is drag
+            newControls.Player.Move.canceled += SwipeEnd;    //Drag moving
         }
         if (dragPosSwipeRotateMovePres == 3)
 
-            newControls.Touch.Move.performed += RotateObject;
+            newControls.Player.Move.performed += RotateObject;
 
         if (dragPosSwipeRotateMovePres == 4)
 
-            newControls.Touch.Move.performed += MoveTouch;
+            newControls.Player.Move.performed += MoveTouch;
 
         if (dragPosSwipeRotateMovePres == 5)
 
-            newControls.Touch.Press.performed += TouchPressed;
+            newControls.Player.Press.performed += TouchPressed;
 
-        newControls.Touch.DoubleLook.performed += ZoomDoubleTouch;
-        newControls.Touch.PrimaryLook.performed += ZoomPrimaryTouch;
+        newControls.Player.Tap.performed += ZoomDoubleTouch;
+        newControls.Player.Zoom.performed += ZoomPrimaryTouch;
         //newControls.Touch.DoubleClick.performed += 
         //touchPress = playerInput.actions["Press"];
         //touchPosition = playerInput.actions["Move"];

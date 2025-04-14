@@ -46,7 +46,7 @@ public partial class @NewControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""PrymariLook"",
+                    ""name"": ""Zoom"",
                     ""type"": ""Value"",
                     ""id"": ""031e906d-0373-4d3a-b662-9139081f9313"",
                     ""expectedControlType"": ""Delta"",
@@ -197,23 +197,12 @@ public partial class @NewControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""ffc8c5fa-4d59-4a55-b43a-4b8583d5006a"",
-                    ""path"": ""<Touchscreen>/primaryTouch/delta"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Touch"",
-                    ""action"": ""PrymariLook"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""6eb0216c-4ea2-4ed5-b774-dca0cfe824d0"",
                     ""path"": ""<Touchscreen>/touch1/delta"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Touch"",
-                    ""action"": ""PrymariLook"",
+                    ""action"": ""Zoom"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -400,7 +389,7 @@ public partial class @NewControls: IInputActionCollection2, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
-        m_Player_PrymariLook = m_Player.FindAction("PrymariLook", throwIfNotFound: true);
+        m_Player_Zoom = m_Player.FindAction("Zoom", throwIfNotFound: true);
         m_Player_Press = m_Player.FindAction("Press", throwIfNotFound: true);
         m_Player_Tap = m_Player.FindAction("Tap", throwIfNotFound: true);
         // UI
@@ -476,7 +465,7 @@ public partial class @NewControls: IInputActionCollection2, IDisposable
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Move;
-    private readonly InputAction m_Player_PrymariLook;
+    private readonly InputAction m_Player_Zoom;
     private readonly InputAction m_Player_Press;
     private readonly InputAction m_Player_Tap;
     public struct PlayerActions
@@ -485,7 +474,7 @@ public partial class @NewControls: IInputActionCollection2, IDisposable
         public PlayerActions(@NewControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @Move => m_Wrapper.m_Player_Move;
-        public InputAction @PrymariLook => m_Wrapper.m_Player_PrymariLook;
+        public InputAction @Zoom => m_Wrapper.m_Player_Zoom;
         public InputAction @Press => m_Wrapper.m_Player_Press;
         public InputAction @Tap => m_Wrapper.m_Player_Tap;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
@@ -503,9 +492,9 @@ public partial class @NewControls: IInputActionCollection2, IDisposable
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
-            @PrymariLook.started += instance.OnPrymariLook;
-            @PrymariLook.performed += instance.OnPrymariLook;
-            @PrymariLook.canceled += instance.OnPrymariLook;
+            @Zoom.started += instance.OnZoom;
+            @Zoom.performed += instance.OnZoom;
+            @Zoom.canceled += instance.OnZoom;
             @Press.started += instance.OnPress;
             @Press.performed += instance.OnPress;
             @Press.canceled += instance.OnPress;
@@ -522,9 +511,9 @@ public partial class @NewControls: IInputActionCollection2, IDisposable
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
-            @PrymariLook.started -= instance.OnPrymariLook;
-            @PrymariLook.performed -= instance.OnPrymariLook;
-            @PrymariLook.canceled -= instance.OnPrymariLook;
+            @Zoom.started -= instance.OnZoom;
+            @Zoom.performed -= instance.OnZoom;
+            @Zoom.canceled -= instance.OnZoom;
             @Press.started -= instance.OnPress;
             @Press.performed -= instance.OnPress;
             @Press.canceled -= instance.OnPress;
@@ -671,7 +660,7 @@ public partial class @NewControls: IInputActionCollection2, IDisposable
             AddCallbacks(instance);
         }
     }
-    public TouchActions Player => new TouchActions(this);
+    public TouchActions @Touch => new TouchActions(this);
     private int m_TouchSchemeIndex = -1;
     public InputControlScheme TouchScheme
     {
@@ -703,7 +692,7 @@ public partial class @NewControls: IInputActionCollection2, IDisposable
     {
         void OnJump(InputAction.CallbackContext context);
         void OnMove(InputAction.CallbackContext context);
-        void OnPrymariLook(InputAction.CallbackContext context);
+        void OnZoom(InputAction.CallbackContext context);
         void OnPress(InputAction.CallbackContext context);
         void OnTap(InputAction.CallbackContext context);
     }

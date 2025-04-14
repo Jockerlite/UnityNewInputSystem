@@ -24,7 +24,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "PrymariLook",
+                    "name": "Zoom",
                     "type": "Value",
                     "id": "031e906d-0373-4d3a-b662-9139081f9313",
                     "expectedControlType": "Delta",
@@ -175,23 +175,12 @@
                 },
                 {
                     "name": "",
-                    "id": "ffc8c5fa-4d59-4a55-b43a-4b8583d5006a",
-                    "path": "<Touchscreen>/primaryTouch/delta",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Touch",
-                    "action": "PrymariLook",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "6eb0216c-4ea2-4ed5-b774-dca0cfe824d0",
                     "path": "<Touchscreen>/touch1/delta",
                     "interactions": "",
                     "processors": "",
                     "groups": "Touch",
-                    "action": "PrymariLook",
+                    "action": "Zoom",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
