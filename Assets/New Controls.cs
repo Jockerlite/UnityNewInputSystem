@@ -46,31 +46,40 @@ public partial class @NewControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""PrymariLook"",
+                    ""name"": ""ZoomSecondary"",
                     ""type"": ""Value"",
                     ""id"": ""031e906d-0373-4d3a-b662-9139081f9313"",
-                    ""expectedControlType"": ""Delta"",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""Press"",
-                    ""type"": ""Button"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""10f39368-e0a9-4736-ad84-21b93e2d8e92"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": ""Touch"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
                     ""name"": ""Tap"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""022d09f5-0748-4e8d-acbe-e85ed7264f26"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""TouchMove"",
+                    ""type"": ""Value"",
+                    ""id"": ""3f9d75e6-a3dd-42e0-a3d2-e575aa414fab"",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -197,30 +206,19 @@ public partial class @NewControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""ffc8c5fa-4d59-4a55-b43a-4b8583d5006a"",
-                    ""path"": ""<Touchscreen>/primaryTouch/delta"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Touch"",
-                    ""action"": ""PrymariLook"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""6eb0216c-4ea2-4ed5-b774-dca0cfe824d0"",
-                    ""path"": ""<Touchscreen>/touch1/delta"",
+                    ""path"": ""<Touchscreen>/touch1/position"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Touch"",
-                    ""action"": ""PrymariLook"",
+                    ""action"": ""ZoomSecondary"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
                     ""id"": ""f2020751-4f7b-4767-ad52-ec27eca7388b"",
-                    ""path"": ""<Touchscreen>/touch*/Press"",
+                    ""path"": ""<Touchscreen>/primaryTouch"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Touch"",
@@ -231,11 +229,22 @@ public partial class @NewControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""ff06c792-08fb-4fd4-92be-87ac5859382a"",
-                    ""path"": ""<Touchscreen>/primaryTouch/tap"",
+                    ""path"": ""<Touchscreen>/position"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Touch"",
                     ""action"": ""Tap"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""77cb6b07-4a26-44c4-939c-0440c21ad6be"",
+                    ""path"": ""<Touchscreen>/primaryTouch/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Touch"",
+                    ""action"": ""TouchMove"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -400,9 +409,10 @@ public partial class @NewControls: IInputActionCollection2, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
-        m_Player_PrymariLook = m_Player.FindAction("PrymariLook", throwIfNotFound: true);
+        m_Player_ZoomSecondary = m_Player.FindAction("ZoomSecondary", throwIfNotFound: true);
         m_Player_Press = m_Player.FindAction("Press", throwIfNotFound: true);
         m_Player_Tap = m_Player.FindAction("Tap", throwIfNotFound: true);
+        m_Player_TouchMove = m_Player.FindAction("TouchMove", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Newaction = m_UI.FindAction("New action", throwIfNotFound: true);
@@ -476,18 +486,20 @@ public partial class @NewControls: IInputActionCollection2, IDisposable
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Move;
-    private readonly InputAction m_Player_PrymariLook;
+    private readonly InputAction m_Player_ZoomSecondary;
     private readonly InputAction m_Player_Press;
     private readonly InputAction m_Player_Tap;
+    private readonly InputAction m_Player_TouchMove;
     public struct PlayerActions
     {
         private @NewControls m_Wrapper;
         public PlayerActions(@NewControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @Move => m_Wrapper.m_Player_Move;
-        public InputAction @PrymariLook => m_Wrapper.m_Player_PrymariLook;
+        public InputAction @ZoomSecondary => m_Wrapper.m_Player_ZoomSecondary;
         public InputAction @Press => m_Wrapper.m_Player_Press;
         public InputAction @Tap => m_Wrapper.m_Player_Tap;
+        public InputAction @TouchMove => m_Wrapper.m_Player_TouchMove;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -503,15 +515,18 @@ public partial class @NewControls: IInputActionCollection2, IDisposable
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
-            @PrymariLook.started += instance.OnPrymariLook;
-            @PrymariLook.performed += instance.OnPrymariLook;
-            @PrymariLook.canceled += instance.OnPrymariLook;
+            @ZoomSecondary.started += instance.OnZoomSecondary;
+            @ZoomSecondary.performed += instance.OnZoomSecondary;
+            @ZoomSecondary.canceled += instance.OnZoomSecondary;
             @Press.started += instance.OnPress;
             @Press.performed += instance.OnPress;
             @Press.canceled += instance.OnPress;
             @Tap.started += instance.OnTap;
             @Tap.performed += instance.OnTap;
             @Tap.canceled += instance.OnTap;
+            @TouchMove.started += instance.OnTouchMove;
+            @TouchMove.performed += instance.OnTouchMove;
+            @TouchMove.canceled += instance.OnTouchMove;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -522,15 +537,18 @@ public partial class @NewControls: IInputActionCollection2, IDisposable
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
-            @PrymariLook.started -= instance.OnPrymariLook;
-            @PrymariLook.performed -= instance.OnPrymariLook;
-            @PrymariLook.canceled -= instance.OnPrymariLook;
+            @ZoomSecondary.started -= instance.OnZoomSecondary;
+            @ZoomSecondary.performed -= instance.OnZoomSecondary;
+            @ZoomSecondary.canceled -= instance.OnZoomSecondary;
             @Press.started -= instance.OnPress;
             @Press.performed -= instance.OnPress;
             @Press.canceled -= instance.OnPress;
             @Tap.started -= instance.OnTap;
             @Tap.performed -= instance.OnTap;
             @Tap.canceled -= instance.OnTap;
+            @TouchMove.started -= instance.OnTouchMove;
+            @TouchMove.performed -= instance.OnTouchMove;
+            @TouchMove.canceled -= instance.OnTouchMove;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -671,7 +689,7 @@ public partial class @NewControls: IInputActionCollection2, IDisposable
             AddCallbacks(instance);
         }
     }
-    public TouchActions Player => new TouchActions(this);
+    public TouchActions @Touch => new TouchActions(this);
     private int m_TouchSchemeIndex = -1;
     public InputControlScheme TouchScheme
     {
@@ -703,9 +721,10 @@ public partial class @NewControls: IInputActionCollection2, IDisposable
     {
         void OnJump(InputAction.CallbackContext context);
         void OnMove(InputAction.CallbackContext context);
-        void OnPrymariLook(InputAction.CallbackContext context);
+        void OnZoomSecondary(InputAction.CallbackContext context);
         void OnPress(InputAction.CallbackContext context);
         void OnTap(InputAction.CallbackContext context);
+        void OnTouchMove(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

@@ -24,31 +24,40 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "PrymariLook",
+                    "name": "ZoomSecondary",
                     "type": "Value",
                     "id": "031e906d-0373-4d3a-b662-9139081f9313",
-                    "expectedControlType": "Delta",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
                 },
                 {
                     "name": "Press",
-                    "type": "Button",
+                    "type": "PassThrough",
                     "id": "10f39368-e0a9-4736-ad84-21b93e2d8e92",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "Touch",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
                     "name": "Tap",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "022d09f5-0748-4e8d-acbe-e85ed7264f26",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "TouchMove",
+                    "type": "Value",
+                    "id": "3f9d75e6-a3dd-42e0-a3d2-e575aa414fab",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -175,30 +184,19 @@
                 },
                 {
                     "name": "",
-                    "id": "ffc8c5fa-4d59-4a55-b43a-4b8583d5006a",
-                    "path": "<Touchscreen>/primaryTouch/delta",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Touch",
-                    "action": "PrymariLook",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "6eb0216c-4ea2-4ed5-b774-dca0cfe824d0",
-                    "path": "<Touchscreen>/touch1/delta",
+                    "path": "<Touchscreen>/touch1/position",
                     "interactions": "",
                     "processors": "",
                     "groups": "Touch",
-                    "action": "PrymariLook",
+                    "action": "ZoomSecondary",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "f2020751-4f7b-4767-ad52-ec27eca7388b",
-                    "path": "<Touchscreen>/touch*/Press",
+                    "path": "<Touchscreen>/primaryTouch",
                     "interactions": "",
                     "processors": "",
                     "groups": "Touch",
@@ -209,11 +207,22 @@
                 {
                     "name": "",
                     "id": "ff06c792-08fb-4fd4-92be-87ac5859382a",
-                    "path": "<Touchscreen>/primaryTouch/tap",
+                    "path": "<Touchscreen>/position",
                     "interactions": "",
                     "processors": "",
                     "groups": "Touch",
                     "action": "Tap",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "77cb6b07-4a26-44c4-939c-0440c21ad6be",
+                    "path": "<Touchscreen>/primaryTouch/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Touch",
+                    "action": "TouchMove",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
