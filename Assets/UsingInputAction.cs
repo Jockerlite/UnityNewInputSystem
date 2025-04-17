@@ -3,21 +3,17 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.UIElements;
 
 public class UsingInputAction : MonoBehaviour
 {
-    public GameObject ObjectInteraction;
-    public bool WorldTwoD;
-    public bool DoubleClick;
     [SerializeField, Range(0,5)] private int dragPosSwipeRotateMovePres; // As drop-down list
-    public GameObject camera;
     public GameObject trail;
     [SerializeField] private float minimumDistance = .2f;
     [SerializeField] private float maximumDistance = 1.0f;
     [SerializeField, Range(0f, 1f)] private float directionThreshold = 0.9f;
     private InputAction.CallbackContext contextSwipe;
-    [SerializeField] private float smooth = 1;
 
     private Rigidbody sphereRigidbody;
     private PlayerInput playerInput;
@@ -29,6 +25,7 @@ public class UsingInputAction : MonoBehaviour
     private Vector3 endPosition;
     private Vector3 startDoublePosition;
     private Vector3 endDoublePosition;
+    private Quaternion rotatePosition;
     private float startTimePosition;
     private float endTimePosition;
     private float startDoubleTimePosition;
@@ -42,34 +39,53 @@ public class UsingInputAction : MonoBehaviour
     private Coroutine coroutineSwipe;
     private float ObjectDistanceCamera = 1.5f;
     private bool isometric;
-    private float timeDoubleTap;
+    private float timeDoubleTap; 
+    private Vector3 oldRotatePosition;
+    private Vector3 newRotatePosition;
+    private bool isRotate;
+    InputAction.CallbackContext _context;
+    NewControls newControls;
+    public float sharpnessZoom; //speedzooom
+    public float cameraPosition; // with point camera down
+    public int cameraZoomMax;
+    public int cameraZoomMin;
+    public float cameraSpeed;
+    public RaycastHit reyHit;
+    public MouseState mouseState;
+    private bool moveMouse;
+    private bool touchEnable;
+    private bool touchDisable;
+    private bool rotateMouse;
+    private float timeDoubleClick;
+    private Vector3 mousePosition;
+    private float speedMouse = 0.5f;
+    private float speedMoveKey = 0.5f; 
+
     private void Awake()//started - !, performed - use press, canceled - end press
     {   
+
+        //mouseState = gameObject.GetComponent<MouseState>();
         sphereRigidbody = GetComponent<Rigidbody>();
         playerInput = GetComponent<PlayerInput>();
-
-        NewControls newControls = new NewControls();
         newControls.Enable();
         newControls.Player.Jump.performed += Space;
+        newControls.Player.Move.performed += WASD;
+        newControls.Player.Press.canceled += Press;
         //newControls.Player.Movement.performed += Move;
         if (dragPosSwipeRotateMovePres == 0)// what is drag ? whereb is drag and merg ?
         {
-            if (WorldTwoD)
                 newControls.Player.Move.performed += DragDrop2D;  //Position is end
             else
                 newControls.Player.Move.performed += DragDrop3D;  //Position is end
         }
         if (dragPosSwipeRotateMovePres == 1) // Move is equivalent stick, difference the Pose is this click object and click map? Need make radius zone
         {
-            if(WorldTwoD)
                 newControls.Player.Move.performed += TouchPosition2D;  //DragDrop in process 
             else
                 newControls.Player.Move.performed += TouchPosition3D;    //DragDrop in process 
         }
         if (dragPosSwipeRotateMovePres == 2) // no move, no colrLine
         {
-            newControls.Player.Move.performed += SwipeStart;   //Swipe is drag
-            newControls.Player.Move.performed += SwipeEnd;    //Drag moving
         }
         if (dragPosSwipeRotateMovePres == 3)
 
@@ -81,9 +97,17 @@ public class UsingInputAction : MonoBehaviour
 
         if (dragPosSwipeRotateMovePres == 5)
 
-            newControls.Player.Press.performed += ZoomDoubleTap;//TouchPressed;
+             newControls.Player.Press.performed += ZoomDoubleTap;//TouchPressed;
 
-       // newControls.Player.Tap.performed += ZoomDoubleTouch;
+        newControls.Player.MouseScroll.performed += MouseScroll;
+        newControls.Player.Aiming.started += EnableRotateMouse;
+        newControls.Player.MouseMove.performed += MouseRotate;
+        newControls.Player.Aiming.canceled += DisableRotateMouse;
+        newControls.Player.Fire.started += EnableMoveMouse;
+        newControls.Player.MouseMove.performed += MouseMove;
+        newControls.Player.Fire.canceled += DisableMoveMouse;
+
+        // newControls.Player.Tap.performed += ZoomDoubleTouch;
         newControls.Player.ZoomSecondary.performed += ZoomSecondaryTouch;
         //newControls.Touch.DoubleClick.performed += 
         //touchPress = playerInput.actions["Press"];
@@ -91,14 +115,20 @@ public class UsingInputAction : MonoBehaviour
         //touchDoublePosition = playerInput.actions["DoubleMove"];
 
     }
-
-    private void Move(InputAction.CallbackContext context)
     {
-        Debug.Log(context);
-        Vector2 inputVector = context.ReadValue<Vector2>();
-        primaryPosition = new Vector3 (inputVector.x, inputVector.y, Camera.main.nearClipPlane* ObjectDistanceCamera);
-        if (zoomEnable) return;
-        sphereRigidbody.AddForce(new Vector3(inputVector.x, 0, inputVector.y) * speedMove * 5 * Time.deltaTime, ForceMode.Impulse);
+        }
+        if (Keyboard.current[Key.S].wasPressedThisFrame)
+        {
+            sphereRigidbody.AddForce(Vector3.back * speedMoveKey * Time.deltaTime, ForceMode.Impulse);
+        }
+        if (Keyboard.current[Key.A].wasPressedThisFrame)
+        {
+            sphereRigidbody.AddForce(Vector3.left * speedMoveKey * Time.deltaTime, ForceMode.Impulse);
+        }
+        if (Keyboard.current[Key.D].wasPressedThisFrame)
+        {
+            sphereRigidbody.AddForce(Vector3.right * speedMoveKey * Time.deltaTime, ForceMode.Impulse);
+        }
     }
     public void Space(InputAction.CallbackContext context)
     {
@@ -106,10 +136,188 @@ public class UsingInputAction : MonoBehaviour
         sphereRigidbody.AddForce(Vector3.up * 5f, ForceMode.Impulse);
 
     }
+    private void MusingKey(InputAction.CallbackContext context)
+    {
+        
+    }
+
+    /// //////////////////////////// - Mouse - //////////////////////////
+    private void MouseScroll(InputAction.CallbackContext context) // zoom
+    {
+        Vector2 vec = context.ReadValue<Vector2>();
+        Debug.Log("MouseScroll " + context.control);
+        if (vec.x < 0 || vec.y < 0) camera.fieldOfView += Time.deltaTime * sharpnessZoom;
+        if (vec.x > 0 || vec.y > 0) camera.fieldOfView -= Time.deltaTime*sharpnessZoom;
+
+    }
+    private void EnableMoveMouse(InputAction.CallbackContext context)
+    {//+ double click
+        float time = Time.fixedTime - timeDoubleClick;
+        if (time <= 0.25)
+        {
+            //Debug.Log("DoubleClick " + time); 
+            DoubleClick();
+        }
+        else 
+        //Debug.Log("MouseFire " + moveMouse); 
+        //Debug.LogAssertion(time + " MTime " + Time.fixedTime);
+        timeDoubleClick = Time.fixedTime;
+        moveMouse = true;
+
+    }
+    private void EnableRotateMouse(InputAction.CallbackContext context)
+    {
+        rotateMouse = true;
+
+        isRotate = true;
+        //Debug.Log("MouseAiming " + rotateMouse);
+    }
+    private void DisableMoveMouse(InputAction.CallbackContext context)
+    {
+        moveMouse = false;
+        //Debug.Log("MouseFire " + moveMouse);
+    }
+    private void DisableRotateMouse(InputAction.CallbackContext context)
+    {
+        rotateMouse = false;
+        //Debug.Log("MouseAiming " + rotateMouse);
+    }
+    private void MouseMove(InputAction.CallbackContext context)//rotation angle must be taken into account but now not hardcode, new two gameObject 1.Rotate 2. Move in relrtive 1
+    {
+        Vector2 vector = context.ReadValue<Vector2>();
+        float width;
+        float height;
+        //Debug.Log("MouseMove" + moveMouse);
+        if (!moveMouse) return;
+        else
+        {
+            Vector2 screen = new Vector2(Screen.width, Screen.height);
+            width = screen.x /100;
+            height = screen.y /100;
+            if (vector.x < 20 * width) camera.transform.position = new Vector3(camera.transform.position.x - 1 * Time.deltaTime, camera.transform.position.y, camera.transform.position.z);
+            if (vector.y < 20 * height) camera.transform.position = new Vector3(camera.transform.position.x, camera.transform.position.y- 1 * Time.deltaTime, camera.transform.position.z);
+            if (vector.x > 80 * width) camera.transform.position = new Vector3(camera.transform.position.x + 1 * Time.deltaTime, camera.transform.position.y, camera.transform.position.z);
+            if (vector.y > 80 * height) camera.transform.position = new Vector3(camera.transform.position.x, camera.transform.position.y+ 1 * Time.deltaTime, camera.transform.position.z);
+            //Vector2 vec = context.ReadValue<Vector2>();
+            //Vector3 mouseWorldPoint = Camera.main.ScreenToWorldPoint(new Vector3(vec.x, vec.y, Camera.main.nearClipPlane));
+            //camera.transform.position += mouseWorldPoint *Time.deltaTime ;
+        }
+    }
+    private void DoubleClick()
+    {
+        return;
+    }
+    private void MouseRotate(InputAction.CallbackContext context)
+    {
+        if (!rotateMouse) return;
+        else
+        {
+            Vector2 vec = context.ReadValue<Vector2>();
+            Vector2 inputVector = context.ReadValue<Vector2>();
+            Vector3 inputVector3 = new Vector3(inputVector.x, inputVector.y, 1);
+            Vector3 pos = new Vector3(inputVector.x, inputVector.y, Camera.main.nearClipPlane);
+            Vector3 worldPoint = Camera.main.ScreenToWorldPoint(pos);
+            if (isRotate)
+            {
+                Debug.Log("Rotate");
+                oldRotatePosition = inputVector3;
+                isRotate = false;
+            }
+            else
+            {
+                newRotatePosition = inputVector3;
+                Vector3 deltaRotate = oldRotatePosition - newRotatePosition;
+                deltaRotate = new Vector3(deltaRotate.y * -1, deltaRotate.x, deltaRotate.z) * 10;
+                rotatePosition = Quaternion.Euler(deltaRotate) * sphereRigidbody.transform.rotation;
+                sphereRigidbody.transform.rotation = Quaternion.Lerp(sphereRigidbody.transform.rotation, rotatePosition, smoothRotate); //sharp rotation
+                oldRotatePosition = newRotatePosition;
+
+            }
+            Debug.Log("Mouse Rotate" + vec);
+        }
+    }
+
+    //private void CameraHightPositionMouse()
+    //{
+    //    Vector3 directionRay = camera.transform.TransformDirection(Vector3.forward);
+    //    if (Physics.Raycast(camera.transform.position, directionRay, out reyHit, 100))
+    //    {
+    //        if (reyHit.collider.tag == "terrain")
+    //        {
+    //            if (reyHit.distance < cameraPosition)
+    //                Debug.Log(reyHit.transform.name);
+    //            camera.transform.position += new Vector3(0, cameraPosition - reyHit.distance, 0);
+    //        }
+    //        else { camera.transform.position -= new Vector3(0, reyHit.distance - cameraPosition, 0); }
+    //    }
+    //    if (Input.GetAxis("MouseScrollWhell") < 0 && cameraPosition < cameraZoomMin)
+    //    {
+    //        cameraPosition += sharpnessZoom * Time.deltaTime;
+    //        cameraSpeed += 0.007f;
+    //    }
+    //    if (Input.GetAxis("MouseScrollWhell") > 0 && cameraPosition > cameraZoomMax)
+    //    {
+    //        cameraPosition -= sharpnessZoom * Time.deltaTime;
+    //        cameraSpeed -= 0.007f;
+    //    }
+    //}
+    //private void ZoomMouse()
+    //{
+    //    camera.orthographicSize -= Input.GetAxis("Mouse ScrollWheel") * sharpnessZoom;
+
+    //}
+    //private void CameraWITHPositionMouse()
+    //{
+    //    if (true)//mouseState.NewMouseState == mouseState.MouseState.Default)
+    //    {
+    //        if (20 > Input.mousePosition.x)
+    //        {
+    //            camera.transform.position -= new Vector3(cameraSpeed, 0, 0);
+    //        }
+    //        if ((Screen.width - 10) < Input.mousePosition.x)
+    //        {
+    //            camera.transform.position += new Vector3(cameraSpeed, 0, 0);
+    //        }
+
+    //        if (20 > Input.mousePosition.y)
+    //        {
+    //            camera.transform.position -= new Vector3(cameraSpeed, 0, 0);
+    //        }
+    //        if ((Screen.width - 10) < Input.mousePosition.y)
+    //        {
+    //            camera.transform.position += new Vector3(cameraSpeed, 0, 0);
+    //        }
+    //    }
+    //}
+    //private void Move(InputAction.CallbackContext context)
+    //{
+    //    Debug.Log(context);
+    //    Vector2 inputVector = context.ReadValue<Vector2>();
+    //    primaryPosition = new Vector3(inputVector.x, inputVector.y, Camera.main.nearClipPlane * ObjectDistanceCamera);
+    //    if (zoomEnable) return;
+    //    sphereRigidbody.AddForce(new Vector3(inputVector.x, 0, inputVector.y) * speedMove * 5 * Time.deltaTime, ForceMode.Impulse);
+    //}
+
+    private void Update()
+    {
+        touchEnable = Touchscreen.current.primaryTouch.press.isPressed;
+        
+            if(worldTwoD)
+                Swipe2D(_context); 
+            else Swipe3D(_context);
+        //if (Touchscreen.current.primaryTouch.press.isPressed != true && startPosition.x != 0) SwipeDirection();
+        //Debug.Log(Touchscreen.current.primaryTouch.press.isPressed);
+    }
+
+    //////////////////////////// - Touch  - //////////////////////////
+    /// 
+    
     private void DragDrop2D(InputAction.CallbackContext context)
     {
         if (zoomEnable) return;
-        return;
+            }
+
+            }
     }
     private void DragDrop3D(InputAction.CallbackContext context)
     {
@@ -158,71 +366,30 @@ public class UsingInputAction : MonoBehaviour
         Debug.Log(context);
         Debug.Log(primaryPosition);
     }
-    //public void TouchPosition(InputAction.CallbackContext context)
-    //{
-    //    Debug.Log("PositionEnable2D");
 
-    //    Vector2 inputVector = context.ReadValue<Vector2>();
-    //    primaryPosition = new Vector3(inputVector.x, inputVector.y, Camera.main.nearClipPlane);
-    //    if (zoomEnable) return;
-    //    Vector3 worldPoint = Camera.main.ScreenToWorldPoint(primaryPosition);
-    //    //Vector3 worldPoint = Camera.main.ScreenToWorldPoint(context.ReadValue<Vector2>());
-    //    // sphere.transform.position = new Vector3(inputVector.x, sphere.transform.position.z, inputVector.y);
-    //    sphereRigidbody.AddForce(new Vector3(worldPoint.x, worldPoint.y, 0) * speedMove * Time.deltaTime, ForceMode.Force);
 
-    //    Debug.Log(context);
-    //    Debug.Log(primaryPosition);
-    //}
-    //public void Submit()
-    //{
 
-    //    Debug.Log("Submit");
-    //}
-    //  Движение через свайпю Вращение вокруг объекта. Зоом. Зоом через двойной клик. Перемещение камеры через свайп 3Д. Премещение объекта в 3Д на поверхностях.
-    //  Скролинг меню. Нажатие клавишь. Нажатие на объект с тегом.
-    //private void OnEnable()
-    //{
-    //    touchPress.performed += TouchPressed;
 
-    //    Debug.Log("Enable");
-    //}
-    //private void OnDisable()
-    //{
-    //    touchPress.performed -= TouchPressed;
 
-    //    Debug.Log("Disable");
-    //}
 
-    private void SwipeStart(InputAction.CallbackContext context)
-    {
+                {
         if (zoomEnable) return;
 
-        Debug.Log("SwipeEnable");
-        Vector2 inputVector = context.ReadValue<Vector2>();
-        startPosition = new Vector3(inputVector.x, inputVector.y, Camera.main.nearClipPlane);
-        Debug.Log(startPosition + "startPosition");
-        trail.SetActive(true);
-        trail.transform.position = startPosition;
-        contextSwipe = context;
-        coroutineSwipe = StartCoroutine("Trail");
     }
-    private void SwipeEnd(InputAction.CallbackContext context)
-    {
-        StopCoroutine(coroutineSwipe);
-        Vector2 inputVector = context.ReadValue<Vector2>();
-        endPosition = new Vector3(inputVector.x, inputVector.y, Camera.main.nearClipPlane); 
-        Debug.Log(endPosition + "endPosition");
-        distance = Vector3.Distance(startPosition, endPosition);
-        if (distance > dethZoneSwipe)
         {
-            //TouchPosition3D(context);
-        Debug.DrawLine(startPosition, endPosition, Color.red, 5f);
-        Vector3 direction = startPosition - endPosition;
-        Vector2 direction2D = new Vector2(direction.x, direction.y).normalized;
-        SwipeDirection(direction2D);
-        trail.SetActive(false);
-            //    return;
-        }
+        StopCoroutine(coroutineSwipe);
+            Vector2 inputVector = context.ReadValue<Vector2>();
+    {
+    }
+
+    private void SwipeDirection(Vector2 vec)
+    {
+        if (Mathf.Abs(vec.x) > Mathf.Abs(vec.y))
+            if (vec.x > 0) Debug.Log("SwipeRight");
+            else Debug.Log("SwipeLeft");
+        else
+            if (vec.y > 0) Debug.Log("SwipeUp");
+            else Debug.Log("SwipeDown");
     }
     private IEnumerator Trail()
     {
@@ -253,29 +420,23 @@ public class UsingInputAction : MonoBehaviour
         }
 
     }
+    
+    public void Press(InputAction.CallbackContext context)
+    {
+        isRotate = true;
+
+    }
     private void RotateObject(InputAction.CallbackContext context)
     {
         Debug.Log("Rotate");
 
         Vector2 inputVector = context.ReadValue<Vector2>();
+        Vector3 inputVector3 = new Vector3(inputVector.x, inputVector.y, 1);
         Vector3 pos = new Vector3(inputVector.x, inputVector.y, Camera.main.nearClipPlane);
         Vector3 worldPoint = Camera.main.ScreenToWorldPoint(pos);
-        //Vector3 worldPoint = Camera.main.ScreenToWorldPoint(context.ReadValue<Vector2>());
-        // sphere.transform.position = new Vector3(inputVector.x, sphere.transform.position.z, inputVector.y);
-        if (startPosition.x == 0)   //Standart rotate
-            startPosition = worldPoint;
-        else {
-            endPosition = worldPoint;
-            //need calculate whith samiami
-            //sphereRigidbody.transform.rotation = new Vector2()
         }
-        sphereRigidbody.transform.rotation = Quaternion.Lerp(sphereRigidbody.transform.rotation, Quaternion.Euler(worldPoint), smooth); //sharp rotation
-        //sphereRigidbody.transform.rotation = Quaternion.Slerp(sphereRigidbody.transform.rotation, Quaternion.Euler(worldPoint), smooth); //slow anim
-        //sphereRigidbody.transform.rotation = Quaternion.RotateTowards(sphereRigidbody.transform.rotation, Quaternion.Euler(worldPoint), smooth);//normal anim
-        //aaasphereRigidbody.transform.rotation = Quaternion.LookRotation(worldPoint); // Monitors the position of the mouse or looks at the position of the mouse
 
-        //sphereRigidbody.AddForce(new Vector3(worldPoint.x, worldPoint.y, 0) * speed * Time.deltaTime, ForceMode.Force);
-
+        
         Debug.Log(context);
         Debug.Log(pos);
         startPosition = new Vector3 (0,0,0);
@@ -337,6 +498,6 @@ public class UsingInputAction : MonoBehaviour
             //check click
         }*/
     }
-
+    
 
 }
