@@ -388,9 +388,9 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 5
+  near clip plane: 4.54
   far clip plane: 100.01
-  field of view: 51.69767
+  field of view: 39
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -527,7 +527,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2030413509
 GameObject:
@@ -545,7 +545,7 @@ GameObject:
   - component: {fileID: 2030413510}
   - component: {fileID: 2030413516}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: P:layer0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -575,10 +575,59 @@ MonoBehaviour:
   m_ControlsChangedEvent:
     m_PersistentCalls:
       m_Calls: []
-  m_ActionEvents: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 9e9e5bfb-0562-4c2d-bad5-e8706b33d73b
+    m_ActionName: Player/Jump[/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: dec8f2a7-2174-42fe-b937-1fc61d0cc477
+    m_ActionName: Player/Move[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow,/Simulated
+      Touchscreen/position,/Simulated Touchscreen/primaryTouch/press]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 031e906d-0373-4d3a-b662-9139081f9313
+    m_ActionName: Player/ZoomSecondary[/Simulated Touchscreen/touch1/position,/Simulated
+      Touchscreen/touch1/delta]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 10f39368-e0a9-4736-ad84-21b93e2d8e92
+    m_ActionName: Player/Press[/Simulated Touchscreen/touch0/press,/Simulated Touchscreen/touch1/press,/Simulated
+      Touchscreen/touch2/press,/Simulated Touchscreen/touch3/press,/Simulated Touchscreen/touch4/press,/Simulated
+      Touchscreen/touch5/press,/Simulated Touchscreen/touch6/press,/Simulated Touchscreen/touch7/press,/Simulated
+      Touchscreen/touch8/press,/Simulated Touchscreen/touch9/press]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 022d09f5-0748-4e8d-acbe-e85ed7264f26
+    m_ActionName: Player/Tap[/Simulated Touchscreen/primaryTouch/tap]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 026d1abc-ecfc-4f80-9e35-486b7ab911e7
+    m_ActionName: UI/New action
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 5ec9c70c-c288-4cda-9490-d5eee78973b8
+    m_ActionName: Touch/Move[/Simulated Touchscreen/position]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 84ae37cf-c468-4940-a78a-96cd9058fbaa
+    m_ActionName: Touch/PrimaryLook[/Simulated Touchscreen/delta]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 030ae13f-619a-4cc1-ae9a-8f2c3c15c4d1
+    m_ActionName: Touch/Press[/Simulated Touchscreen/press]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 534fab5d-f8a1-4f17-8038-c91c83dcecff
+    m_ActionName: Touch/DoubleLook[/Simulated Touchscreen/touch1/position]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 207fedf4-1513-4ead-8968-cf6930c03d65
+    m_ActionName: Touch/DoubleClick[/Simulated Touchscreen/touch1/tap]
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: Touch
-  m_DefaultActionMap: Touch
+  m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 692899507}
 --- !u!114 &2030413511
@@ -593,15 +642,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a083c2296b207d439083459a65c0932, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ObjectInteraction: {fileID: 2030413509}
-  WorldTwoD: 1
-  DoubleClick: 0
-  dragPosSwipeRotateMovePres: 1
-  camera: {fileID: 692899506}
+  objectInteraction: {fileID: 0}
+  worldTwoD: 1
+  doubleClick: 0
+  dragPosSwipeRotateMovePres: 2
+  camera: {fileID: 692899507}
   trail: {fileID: 674700060}
   minimumDistance: 0.2
   maximumDistance: 1
   directionThreshold: 0.836
+  smoothRotate: 0.01
+  sharpnessZoom: 800
+  cameraPosition: 0
+  cameraZoomMax: 0
+  cameraZoomMin: 0
+  cameraSpeed: 0
 --- !u!65 &2030413512
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -673,12 +728,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2030413509}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 327.7476, y: 185.30727, z: -735.4936}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_Father: {fileID: 2057604440}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &2030413516
 Rigidbody:
@@ -696,3 +751,35 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!1 &2057604439
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2057604440}
+  m_Layer: 0
+  m_Name: Player00
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2057604440
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2057604439}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -327.7476, y: -185.30727, z: 735.4936}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2030413515}
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

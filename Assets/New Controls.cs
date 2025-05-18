@@ -40,7 +40,7 @@ public partial class @NewControls: IInputActionCollection2, IDisposable
                     ""name"": ""Move"",
                     ""type"": ""Value"",
                     ""id"": ""dec8f2a7-2174-42fe-b937-1fc61d0cc477"",
-                    ""expectedControlType"": ""Vector2"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
@@ -67,6 +67,42 @@ public partial class @NewControls: IInputActionCollection2, IDisposable
                     ""name"": ""Tap"",
                     ""type"": ""Button"",
                     ""id"": ""022d09f5-0748-4e8d-acbe-e85ed7264f26"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MouseMove"",
+                    ""type"": ""Value"",
+                    ""id"": ""fae7027f-419b-457c-bc0c-260335aca0b5"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""MouseScroll"",
+                    ""type"": ""Value"",
+                    ""id"": ""fd8f0055-1afa-4958-a58d-eca8c5035dd3"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Fire"",
+                    ""type"": ""Value"",
+                    ""id"": ""b6a46c1d-f2be-45b6-9a92-ae46ccd7a1bf"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Aiming"",
+                    ""type"": ""Button"",
+                    ""id"": ""47802d9c-84f6-445b-b1d9-be472ed2fec2"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -197,6 +233,17 @@ public partial class @NewControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""be5a54f2-fd58-4717-a3d0-a5998b7021ab"",
+                    ""path"": ""<Touchscreen>/primaryTouch/press"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Touch"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""ffc8c5fa-4d59-4a55-b43a-4b8583d5006a"",
                     ""path"": ""<Touchscreen>/touch1/position"",
                     ""interactions"": """",
@@ -238,6 +285,50 @@ public partial class @NewControls: IInputActionCollection2, IDisposable
                     ""action"": ""Tap"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b942822f-8032-4a60-b510-79b7701edf19"",
+                    ""path"": ""<Mouse>/scroll"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""MouseScroll"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""79213969-33fb-4ea0-ab60-c8eeb2598456"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""Fire"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9563c94b-7c14-480d-887c-23fd77c3882a"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""Aiming"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a3f260ea-a91d-4b52-bf85-0fa6f8b98765"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""MouseMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -264,114 +355,6 @@ public partial class @NewControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""New action"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                }
-            ]
-        },
-        {
-            ""name"": ""Touch"",
-            ""id"": ""e1856093-d4a0-4836-ab52-da6eb52a9da4"",
-            ""actions"": [
-                {
-                    ""name"": ""Move"",
-                    ""type"": ""Value"",
-                    ""id"": ""5ec9c70c-c288-4cda-9490-d5eee78973b8"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
-                    ""name"": ""PrimaryLook"",
-                    ""type"": ""Value"",
-                    ""id"": ""84ae37cf-c468-4940-a78a-96cd9058fbaa"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
-                    ""name"": ""Press"",
-                    ""type"": ""Button"",
-                    ""id"": ""030ae13f-619a-4cc1-ae9a-8f2c3c15c4d1"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""DoubleLook"",
-                    ""type"": ""Value"",
-                    ""id"": ""534fab5d-f8a1-4f17-8038-c91c83dcecff"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
-                    ""name"": ""DoubleClick"",
-                    ""type"": ""Button"",
-                    ""id"": ""207fedf4-1513-4ead-8968-cf6930c03d65"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                }
-            ],
-            ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""3fe5bbe7-82e7-4679-ae2f-52eff6951d59"",
-                    ""path"": ""<Touchscreen>/position"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Touch"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""f8a606e8-0777-4a75-919a-38a8c431f6e6"",
-                    ""path"": ""<Touchscreen>/delta"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Touch"",
-                    ""action"": ""PrimaryLook"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""e246a6fe-2a29-4f85-8d05-3020fc90c3b9"",
-                    ""path"": ""<Touchscreen>/Press"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Touch"",
-                    ""action"": ""Press"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""415a47dd-6ff6-4db0-82ad-0d568a299430"",
-                    ""path"": ""<Touchscreen>/touch1/position"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Touch"",
-                    ""action"": ""DoubleLook"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""eca61bd6-0dc7-472d-94d2-08296899b2d4"",
-                    ""path"": ""<Touchscreen>/touch1/tap"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Touch"",
-                    ""action"": ""DoubleClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -403,16 +386,13 @@ public partial class @NewControls: IInputActionCollection2, IDisposable
         m_Player_ZoomSecondary = m_Player.FindAction("ZoomSecondary", throwIfNotFound: true);
         m_Player_Press = m_Player.FindAction("Press", throwIfNotFound: true);
         m_Player_Tap = m_Player.FindAction("Tap", throwIfNotFound: true);
+        m_Player_MouseMove = m_Player.FindAction("MouseMove", throwIfNotFound: true);
+        m_Player_MouseScroll = m_Player.FindAction("MouseScroll", throwIfNotFound: true);
+        m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
+        m_Player_Aiming = m_Player.FindAction("Aiming", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Newaction = m_UI.FindAction("New action", throwIfNotFound: true);
-        // Touch
-        m_Touch = asset.FindActionMap("Touch", throwIfNotFound: true);
-        m_Touch_Move = m_Touch.FindAction("Move", throwIfNotFound: true);
-        m_Touch_PrimaryLook = m_Touch.FindAction("PrimaryLook", throwIfNotFound: true);
-        m_Touch_Press = m_Touch.FindAction("Press", throwIfNotFound: true);
-        m_Touch_DoubleLook = m_Touch.FindAction("DoubleLook", throwIfNotFound: true);
-        m_Touch_DoubleClick = m_Touch.FindAction("DoubleClick", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -479,6 +459,10 @@ public partial class @NewControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_ZoomSecondary;
     private readonly InputAction m_Player_Press;
     private readonly InputAction m_Player_Tap;
+    private readonly InputAction m_Player_MouseMove;
+    private readonly InputAction m_Player_MouseScroll;
+    private readonly InputAction m_Player_Fire;
+    private readonly InputAction m_Player_Aiming;
     public struct PlayerActions
     {
         private @NewControls m_Wrapper;
@@ -488,6 +472,10 @@ public partial class @NewControls: IInputActionCollection2, IDisposable
         public InputAction @ZoomSecondary => m_Wrapper.m_Player_ZoomSecondary;
         public InputAction @Press => m_Wrapper.m_Player_Press;
         public InputAction @Tap => m_Wrapper.m_Player_Tap;
+        public InputAction @MouseMove => m_Wrapper.m_Player_MouseMove;
+        public InputAction @MouseScroll => m_Wrapper.m_Player_MouseScroll;
+        public InputAction @Fire => m_Wrapper.m_Player_Fire;
+        public InputAction @Aiming => m_Wrapper.m_Player_Aiming;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -512,6 +500,18 @@ public partial class @NewControls: IInputActionCollection2, IDisposable
             @Tap.started += instance.OnTap;
             @Tap.performed += instance.OnTap;
             @Tap.canceled += instance.OnTap;
+            @MouseMove.started += instance.OnMouseMove;
+            @MouseMove.performed += instance.OnMouseMove;
+            @MouseMove.canceled += instance.OnMouseMove;
+            @MouseScroll.started += instance.OnMouseScroll;
+            @MouseScroll.performed += instance.OnMouseScroll;
+            @MouseScroll.canceled += instance.OnMouseScroll;
+            @Fire.started += instance.OnFire;
+            @Fire.performed += instance.OnFire;
+            @Fire.canceled += instance.OnFire;
+            @Aiming.started += instance.OnAiming;
+            @Aiming.performed += instance.OnAiming;
+            @Aiming.canceled += instance.OnAiming;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -531,6 +531,18 @@ public partial class @NewControls: IInputActionCollection2, IDisposable
             @Tap.started -= instance.OnTap;
             @Tap.performed -= instance.OnTap;
             @Tap.canceled -= instance.OnTap;
+            @MouseMove.started -= instance.OnMouseMove;
+            @MouseMove.performed -= instance.OnMouseMove;
+            @MouseMove.canceled -= instance.OnMouseMove;
+            @MouseScroll.started -= instance.OnMouseScroll;
+            @MouseScroll.performed -= instance.OnMouseScroll;
+            @MouseScroll.canceled -= instance.OnMouseScroll;
+            @Fire.started -= instance.OnFire;
+            @Fire.performed -= instance.OnFire;
+            @Fire.canceled -= instance.OnFire;
+            @Aiming.started -= instance.OnAiming;
+            @Aiming.performed -= instance.OnAiming;
+            @Aiming.canceled -= instance.OnAiming;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -594,84 +606,6 @@ public partial class @NewControls: IInputActionCollection2, IDisposable
         }
     }
     public UIActions @UI => new UIActions(this);
-
-    // Touch
-    private readonly InputActionMap m_Touch;
-    private List<ITouchActions> m_TouchActionsCallbackInterfaces = new List<ITouchActions>();
-    private readonly InputAction m_Touch_Move;
-    private readonly InputAction m_Touch_PrimaryLook;
-    private readonly InputAction m_Touch_Press;
-    private readonly InputAction m_Touch_DoubleLook;
-    private readonly InputAction m_Touch_DoubleClick;
-    public struct TouchActions
-    {
-        private @NewControls m_Wrapper;
-        public TouchActions(@NewControls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Move => m_Wrapper.m_Touch_Move;
-        public InputAction @PrimaryLook => m_Wrapper.m_Touch_PrimaryLook;
-        public InputAction @Press => m_Wrapper.m_Touch_Press;
-        public InputAction @DoubleLook => m_Wrapper.m_Touch_DoubleLook;
-        public InputAction @DoubleClick => m_Wrapper.m_Touch_DoubleClick;
-        public InputActionMap Get() { return m_Wrapper.m_Touch; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
-        public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(TouchActions set) { return set.Get(); }
-        public void AddCallbacks(ITouchActions instance)
-        {
-            if (instance == null || m_Wrapper.m_TouchActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_TouchActionsCallbackInterfaces.Add(instance);
-            @Move.started += instance.OnMove;
-            @Move.performed += instance.OnMove;
-            @Move.canceled += instance.OnMove;
-            @PrimaryLook.started += instance.OnPrimaryLook;
-            @PrimaryLook.performed += instance.OnPrimaryLook;
-            @PrimaryLook.canceled += instance.OnPrimaryLook;
-            @Press.started += instance.OnPress;
-            @Press.performed += instance.OnPress;
-            @Press.canceled += instance.OnPress;
-            @DoubleLook.started += instance.OnDoubleLook;
-            @DoubleLook.performed += instance.OnDoubleLook;
-            @DoubleLook.canceled += instance.OnDoubleLook;
-            @DoubleClick.started += instance.OnDoubleClick;
-            @DoubleClick.performed += instance.OnDoubleClick;
-            @DoubleClick.canceled += instance.OnDoubleClick;
-        }
-
-        private void UnregisterCallbacks(ITouchActions instance)
-        {
-            @Move.started -= instance.OnMove;
-            @Move.performed -= instance.OnMove;
-            @Move.canceled -= instance.OnMove;
-            @PrimaryLook.started -= instance.OnPrimaryLook;
-            @PrimaryLook.performed -= instance.OnPrimaryLook;
-            @PrimaryLook.canceled -= instance.OnPrimaryLook;
-            @Press.started -= instance.OnPress;
-            @Press.performed -= instance.OnPress;
-            @Press.canceled -= instance.OnPress;
-            @DoubleLook.started -= instance.OnDoubleLook;
-            @DoubleLook.performed -= instance.OnDoubleLook;
-            @DoubleLook.canceled -= instance.OnDoubleLook;
-            @DoubleClick.started -= instance.OnDoubleClick;
-            @DoubleClick.performed -= instance.OnDoubleClick;
-            @DoubleClick.canceled -= instance.OnDoubleClick;
-        }
-
-        public void RemoveCallbacks(ITouchActions instance)
-        {
-            if (m_Wrapper.m_TouchActionsCallbackInterfaces.Remove(instance))
-                UnregisterCallbacks(instance);
-        }
-
-        public void SetCallbacks(ITouchActions instance)
-        {
-            foreach (var item in m_Wrapper.m_TouchActionsCallbackInterfaces)
-                UnregisterCallbacks(item);
-            m_Wrapper.m_TouchActionsCallbackInterfaces.Clear();
-            AddCallbacks(instance);
-        }
-    }
-    public TouchActions @Touch => new TouchActions(this);
     private int m_TouchSchemeIndex = -1;
     public InputControlScheme TouchScheme
     {
@@ -706,17 +640,13 @@ public partial class @NewControls: IInputActionCollection2, IDisposable
         void OnZoomSecondary(InputAction.CallbackContext context);
         void OnPress(InputAction.CallbackContext context);
         void OnTap(InputAction.CallbackContext context);
+        void OnMouseMove(InputAction.CallbackContext context);
+        void OnMouseScroll(InputAction.CallbackContext context);
+        void OnFire(InputAction.CallbackContext context);
+        void OnAiming(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
         void OnNewaction(InputAction.CallbackContext context);
-    }
-    public interface ITouchActions
-    {
-        void OnMove(InputAction.CallbackContext context);
-        void OnPrimaryLook(InputAction.CallbackContext context);
-        void OnPress(InputAction.CallbackContext context);
-        void OnDoubleLook(InputAction.CallbackContext context);
-        void OnDoubleClick(InputAction.CallbackContext context);
     }
 }

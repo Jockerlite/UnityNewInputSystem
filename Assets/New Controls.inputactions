@@ -18,7 +18,7 @@
                     "name": "Move",
                     "type": "Value",
                     "id": "dec8f2a7-2174-42fe-b937-1fc61d0cc477",
-                    "expectedControlType": "Vector2",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -45,6 +45,42 @@
                     "name": "Tap",
                     "type": "Button",
                     "id": "022d09f5-0748-4e8d-acbe-e85ed7264f26",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "MouseMove",
+                    "type": "Value",
+                    "id": "fae7027f-419b-457c-bc0c-260335aca0b5",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "MouseScroll",
+                    "type": "Value",
+                    "id": "fd8f0055-1afa-4958-a58d-eca8c5035dd3",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Fire",
+                    "type": "Value",
+                    "id": "b6a46c1d-f2be-45b6-9a92-ae46ccd7a1bf",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Aiming",
+                    "type": "Button",
+                    "id": "47802d9c-84f6-445b-b1d9-be472ed2fec2",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -175,6 +211,17 @@
                 },
                 {
                     "name": "",
+                    "id": "be5a54f2-fd58-4717-a3d0-a5998b7021ab",
+                    "path": "<Touchscreen>/primaryTouch/press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Touch",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "ffc8c5fa-4d59-4a55-b43a-4b8583d5006a",
                     "path": "<Touchscreen>/touch1/position",
                     "interactions": "",
@@ -216,6 +263,50 @@
                     "action": "Tap",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b942822f-8032-4a60-b510-79b7701edf19",
+                    "path": "<Mouse>/scroll",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "MouseScroll",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "79213969-33fb-4ea0-ab60-c8eeb2598456",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "Fire",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9563c94b-7c14-480d-887c-23fd77c3882a",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "Aiming",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a3f260ea-a91d-4b52-bf85-0fa6f8b98765",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "MouseMove",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -242,114 +333,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "New action",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                }
-            ]
-        },
-        {
-            "name": "Touch",
-            "id": "e1856093-d4a0-4836-ab52-da6eb52a9da4",
-            "actions": [
-                {
-                    "name": "Move",
-                    "type": "Value",
-                    "id": "5ec9c70c-c288-4cda-9490-d5eee78973b8",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
-                    "name": "PrimaryLook",
-                    "type": "Value",
-                    "id": "84ae37cf-c468-4940-a78a-96cd9058fbaa",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
-                    "name": "Press",
-                    "type": "Button",
-                    "id": "030ae13f-619a-4cc1-ae9a-8f2c3c15c4d1",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "DoubleLook",
-                    "type": "Value",
-                    "id": "534fab5d-f8a1-4f17-8038-c91c83dcecff",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
-                    "name": "DoubleClick",
-                    "type": "Button",
-                    "id": "207fedf4-1513-4ead-8968-cf6930c03d65",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "",
-                    "id": "3fe5bbe7-82e7-4679-ae2f-52eff6951d59",
-                    "path": "<Touchscreen>/position",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Touch",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "f8a606e8-0777-4a75-919a-38a8c431f6e6",
-                    "path": "<Touchscreen>/delta",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Touch",
-                    "action": "PrimaryLook",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "e246a6fe-2a29-4f85-8d05-3020fc90c3b9",
-                    "path": "<Touchscreen>/Press",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Touch",
-                    "action": "Press",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "415a47dd-6ff6-4db0-82ad-0d568a299430",
-                    "path": "<Touchscreen>/touch1/position",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Touch",
-                    "action": "DoubleLook",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "eca61bd6-0dc7-472d-94d2-08296899b2d4",
-                    "path": "<Touchscreen>/touch1/tap",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Touch",
-                    "action": "DoubleClick",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

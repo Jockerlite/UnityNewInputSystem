@@ -8,12 +8,17 @@ using UnityEngine.UIElements;
 
 public class UsingInputAction : MonoBehaviour
 {
+    public GameObject objectInteraction;
+    public bool worldTwoD;
+    public bool doubleClick;
     [SerializeField, Range(0,5)] private int dragPosSwipeRotateMovePres; // As drop-down list
+    public Camera camera;
     public GameObject trail;
     [SerializeField] private float minimumDistance = .2f;
     [SerializeField] private float maximumDistance = 1.0f;
     [SerializeField, Range(0f, 1f)] private float directionThreshold = 0.9f;
     private InputAction.CallbackContext contextSwipe;
+    [SerializeField] private float smoothRotate = 1;
 
     private Rigidbody sphereRigidbody;
     private PlayerInput playerInput;
@@ -67,6 +72,8 @@ public class UsingInputAction : MonoBehaviour
         //mouseState = gameObject.GetComponent<MouseState>();
         sphereRigidbody = GetComponent<Rigidbody>();
         playerInput = GetComponent<PlayerInput>();
+        touchPress = playerInput.actions["Press"];
+         newControls = new NewControls();
         newControls.Enable();
         newControls.Player.Jump.performed += Space;
         newControls.Player.Move.performed += WASD;
@@ -74,29 +81,32 @@ public class UsingInputAction : MonoBehaviour
         //newControls.Player.Movement.performed += Move;
         if (dragPosSwipeRotateMovePres == 0)// what is drag ? whereb is drag and merg ?
         {
+            if (worldTwoD)
                 newControls.Player.Move.performed += DragDrop2D;  //Position is end
             else
                 newControls.Player.Move.performed += DragDrop3D;  //Position is end
         }
         if (dragPosSwipeRotateMovePres == 1) // Move is equivalent stick, difference the Pose is this click object and click map? Need make radius zone
         {
+            if(worldTwoD)
                 newControls.Player.Move.performed += TouchPosition2D;  //DragDrop in process 
             else
                 newControls.Player.Move.performed += TouchPosition3D;    //DragDrop in process 
         }
         if (dragPosSwipeRotateMovePres == 2) // no move, no colrLine
         {
+            newControls.Player.Move.started += TouchStart;
+            if (worldTwoD) 
+                newControls.Player.Move.performed += Swipe2D;
+            else
+                newControls.Player.Move.performed += Swipe3D;//Swipe is drag
+            newControls.Player.Move.canceled += TouchCanceled;    //Drag moving
         }
         if (dragPosSwipeRotateMovePres == 3)
-
             newControls.Player.Move.performed += RotateObject;
-
         if (dragPosSwipeRotateMovePres == 4)
-
             newControls.Player.Move.performed += MoveTouch;
-
         if (dragPosSwipeRotateMovePres == 5)
-
              newControls.Player.Press.performed += ZoomDoubleTap;//TouchPressed;
 
         newControls.Player.MouseScroll.performed += MouseScroll;
@@ -115,7 +125,13 @@ public class UsingInputAction : MonoBehaviour
         //touchDoublePosition = playerInput.actions["DoubleMove"];
 
     }
+    //////////////////////////////// - Keyboard - ////////////////////////
+    ///
+    private void WASD(InputAction.CallbackContext context)
     {
+        if (Keyboard.current[Key.W].wasPressedThisFrame)
+        {
+            sphereRigidbody.AddForce(Vector3.forward * speedMoveKey * Time.deltaTime, ForceMode.Impulse);
         }
         if (Keyboard.current[Key.S].wasPressedThisFrame)
         {
@@ -315,6 +331,13 @@ public class UsingInputAction : MonoBehaviour
     private void DragDrop2D(InputAction.CallbackContext context)
     {
         if (zoomEnable) return;
+        var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit))
+            {
+                if (hit.collider.tag == "InteractionObject")
+                {
+                    Debug.Log("Hit" + hit.transform.name);
             }
 
             }
@@ -366,20 +389,87 @@ public class UsingInputAction : MonoBehaviour
         Debug.Log(context);
         Debug.Log(primaryPosition);
     }
-
-
-
-
-
-
-                {
-        if (zoomEnable) return;
-
-    }
-        {
-        StopCoroutine(coroutineSwipe);
-            Vector2 inputVector = context.ReadValue<Vector2>();
+    public void TouchPosition(InputAction.CallbackContext context)
     {
+        Debug.Log("PositionEnable2D");
+
+        Vector2 inputVector = context.ReadValue<Vector2>();
+        primaryPosition = new Vector3(inputVector.x, inputVector.y, Camera.main.nearClipPlane);
+        if (zoomEnable) return;
+        Vector3 worldPoint = Camera.main.ScreenToWorldPoint(primaryPosition);
+        //Vector3 worldPoint = Camera.main.ScreenToWorldPoint(context.ReadValue<Vector2>());
+        // sphere.transform.position = new Vector3(inputVector.x, sphere.transform.position.z, inputVector.y);
+        sphereRigidbody.AddForce(new Vector3(worldPoint.x, worldPoint.y, 0) * speedMove * Time.deltaTime, ForceMode.Force);
+
+        Debug.Log(context);
+        Debug.Log(primaryPosition);
+    }
+
+    private void TouchStart(InputAction.CallbackContext context)
+    {
+
+        if (zoomEnable) return;
+        //Debug.Log("SwipeStart");
+        //Vector2 inputVector = context.ReadValue<Vector2>();
+        //startPosition = new Vector3(inputVector.x, inputVector.y, Camera.main.nearClipPlane);
+        _context = context;
+    }
+    private void Swipe2D(InputAction.CallbackContext context)
+    {
+        if (touchEnable && startPosition.x == 0)
+        {
+            _context = context;
+            Vector2 inputVector = context.ReadValue<Vector2>();
+            startPosition = new Vector3(inputVector.x, inputVector.y, Camera.main.nearClipPlane);
+
+            //Debug.Log("go");
+        }else if ( touchEnable == false && startPosition.x != 0)
+        {
+            Vector2 inputVector = context.ReadValue<Vector2>();
+            endPosition = new Vector3(inputVector.x, inputVector.y, Camera.main.nearClipPlane);
+
+            Vector2 vec = new Vector2(startPosition.x - endPosition.x, startPosition.y - endPosition.y);
+            if (Mathf.Abs(vec.x) > Mathf.Abs(vec.y))
+                if (vec.x > 50)
+                {
+                    sphereRigidbody.AddForce(Vector3.right * speedMoveKey * Time.deltaTime, ForceMode.Impulse);
+                    Debug.Log("SwipeRight");
+                }
+                else if (vec.x < -50)
+                {
+
+                    Debug.Log("SwipeLeft");
+                    sphereRigidbody.AddForce(Vector3.left * speedMoveKey * Time.deltaTime, ForceMode.Impulse);
+                }
+                else
+                if (vec.y > 50)
+                {
+                    Debug.Log("SwipeUp");
+                    sphereRigidbody.AddForce(Vector3.forward * speedMoveKey * Time.deltaTime, ForceMode.Impulse);
+                }
+                else if (vec.y < -50)
+                {
+                    Debug.Log("SwipeDown");
+                    sphereRigidbody.AddForce(Vector3.back * speedMoveKey * Time.deltaTime, ForceMode.Impulse);
+                }
+                else Debug.Log(vec);
+                    startPosition.x = 0;
+        }
+    }
+    private void Swipe3D(InputAction.CallbackContext context)
+    {
+
+        if (Touchscreen.current.primaryTouch.press.isPressed)
+        {
+            Vector2 inputVector = context.ReadValue<Vector2>();
+        }
+    }
+    private void TouchCanceled(InputAction.CallbackContext context)
+    {
+        //Debug.Log("SwipeEnd");
+        if(worldTwoD) Swipe2D(context);
+        else Swipe3D(context);
+        
     }
 
     private void SwipeDirection(Vector2 vec)
@@ -428,18 +518,30 @@ public class UsingInputAction : MonoBehaviour
     }
     private void RotateObject(InputAction.CallbackContext context)
     {
-        Debug.Log("Rotate");
 
         Vector2 inputVector = context.ReadValue<Vector2>();
         Vector3 inputVector3 = new Vector3(inputVector.x, inputVector.y, 1);
         Vector3 pos = new Vector3(inputVector.x, inputVector.y, Camera.main.nearClipPlane);
         Vector3 worldPoint = Camera.main.ScreenToWorldPoint(pos);
+        if (isRotate)
+        {
+            Debug.Log("Rotate");
+            oldRotatePosition = inputVector3;
+            isRotate = false;
         }
+        else
+        {
+            newRotatePosition = inputVector3;
+            Vector3 deltaRotate = oldRotatePosition - newRotatePosition;
+            deltaRotate = new Vector3(deltaRotate.y * -1, deltaRotate.x , deltaRotate.z);
+            rotatePosition = Quaternion.Euler(deltaRotate) * sphereRigidbody.transform.rotation;
+            sphereRigidbody.transform.rotation = Quaternion.Lerp(sphereRigidbody.transform.rotation, rotatePosition, smoothRotate); //sharp rotation
+            oldRotatePosition = newRotatePosition;
 
+        }
+        //Debug.Log(newRotatePosition);
+        //Debug.Log(oldRotatePosition);
         
-        Debug.Log(context);
-        Debug.Log(pos);
-        startPosition = new Vector3 (0,0,0);
     }
 
     private void MoveTouch(InputAction.CallbackContext context)
@@ -491,13 +593,6 @@ public class UsingInputAction : MonoBehaviour
     }
     }
 
-    private void Update()
-    {
-       /* if (Touchscreen.current.wasUpdatedThisFrame) //Mouse.current.leftButton.wasPressedThisFrame
-        {
-            //check click
-        }*/
-    }
     
 
 }
